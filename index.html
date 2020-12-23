@@ -51,17 +51,15 @@
   <h5 class="ml-5 mt-3">Time Sheet Loading</h5>
 
   <!-- Header data start -->
-  <div class="card mt-3 mx-5">
+  <div class="card mt-3">
     <div class="card-header">
-      Header Data
+      <strong>Header Data</strong>
     </div>
     <div class="card-body">
-      <!-- <span class="card-title">Special title treatment</span>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
 
       <form>
         <div class="form-group row">
-          <label for="staticEmail" class="col-sm-2 col-form-label">SPAL No.</label>
+          <label class="col-sm-2 col-form-label-sm">SPAL No.</label>
           <div class="col-sm-3">
             <select class="form-control form-control-sm">
               <option>Default select</option>
@@ -69,18 +67,111 @@
               <option>Default select</option>
             </select>
           </div>
-        </div>
-        <div class="form-group row">
-          <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+          <label class="col-sm-2 col-form-label-sm">Date</label>
           <div class="col-sm-3">
-            <input type="password" class="form-control form-control-sm" id="inputPassword">
+            <input type="text" disabled class="form-control form-control-sm" value="01/01/2021">
           </div>
         </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label-sm">Jenis Muatan</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+          <label class="col-sm-2 col-form-label-sm">ETA</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label-sm">Total Muatan</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+          <label class="col-sm-2 col-form-label-sm">Clear Alongside</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label-sm">Pelabuhan Muat</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+          <label class="col-sm-2 col-form-label-sm">Clear Alongside</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label-sm">Pelabuhan Bongkar</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+          <label class="col-sm-2 col-form-label-sm">Draft Sebelum Muat</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label-sm">Cast Off</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+          <label class="col-sm-2 col-form-label-sm">Draft Selesai Muat</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control form-control-sm">
+          </div>
+        </div>
+
       </form>
 
     </div>
   </div>
   <!-- Header data end -->
+
+  <!-- Detail data start -->
+  <div class="card mt-3">
+    <div class="card-header">
+      <strong>Detail Data</strong>
+    </div>
+    <div class="card-body">
+
+      <div class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col">No</th>
+              <th scope="col">Tanggal</th>
+              <th scope="col">Start</th>
+              <th scope="col">End</th>
+              <th scope="col">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <label class="col-form-label-sm">1</label>
+              </td>
+              <td>
+                <input type="date" class="form-control form-control-sm">
+              </td>
+              <td>
+                <input type="time" class="form-control form-control-sm">
+              </td>
+              <td>
+                <input type="time" class="form-control form-control-sm">
+              </td>
+              <td>
+                <input type="text" class="form-control form-control-sm">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+  <!-- Detail data end -->
 
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

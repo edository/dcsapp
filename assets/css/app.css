@@ -1,3 +1,8 @@
+.card {
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
 .card .card-header {
     font-size: 14px;
 }
@@ -5,5 +10,3 @@
 .form-group {
     margin-bottom: 10px;
 }
-
-.select {}
