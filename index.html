@@ -132,6 +132,9 @@
     </div>
     <div class="card-body">
 
+      <button class="btn btn-primary btn-sm" type="button" id="add-detail">Tambah data</button>
+      <button class="btn btn-danger btn-sm ml-2" type="button" id="del-detail">Hapus</button>
+
       <div class="table-responsive">
         <table class="table table-sm" id="tb-detail">
           <thead>
@@ -169,9 +172,6 @@
         </table>
       </div>
 
-      <button class="btn btn-primary btn-sm" type="button" id="add-detail">Tambah data</button>
-      <button class="btn btn-primary btn-sm" type="button" id="del-detail">Hapus</button>
-
     </div>
   </div>
   <!-- Detail data end -->
@@ -207,9 +207,6 @@
             $(this).parents("tr").remove();
           }
         });
-        // if ($("table tbody tr").length == 0) {
-        //   $("#checkedAll").prop('checked', false);
-        // }
       });
 
       // check all record
