@@ -136,7 +136,7 @@
         <table class="table table-sm" id="tb-detail">
           <thead>
             <tr>
-              <th scope="col"></th>
+              <th scope="col"><input type="checkbox" name="checkedAll" id="checkedAll"></th>
               <th scope="col">No</th>
               <th scope="col">Tanggal</th>
               <th scope="col">Start</th>
@@ -147,7 +147,7 @@
           <tbody>
             <tr class="tb-item-detail">
               <td>
-                <input type="checkbox" class="form-control form-control-sm" name="del-item">
+                <input type="checkbox" class="form-control-sm checkDetail" name="del-item">
               </td>
               <td>
                 <label class="col-form-label-sm" class="incDetail">1</label>
@@ -190,13 +190,13 @@
       // add-detail button
       $("#add-detail").click(function () {
         var markup = `<tr>
-                        <td><input type="checkbox" class="form-control form-control-sm" name="del-item"></td>
-                        <td><label class='col-form-label-sm' class='incDetail'>1</label></td>
-                        <td><input type='date' class='form-control form-control-sm' class='dateDetail'></td>
-                        <td><input type='time' class='form-control form-control-sm' class='startDetail'></td>
-                        <td><input type='time' class='form-control form-control-sm' class='endDetail'></td>
-                        <td><input type='text' class='form-control form-control-sm' class='descDetail'></td>
-                      </tr>`;
+                  <td><input type="checkbox" class="form-control-sm checkDetail" name="del-item"></td>
+                  <td><label class='col-form-label-sm' class='incDetail'>1</label></td>
+                  <td><input type='date' class='form-control form-control-sm' class='dateDetail'></td>
+                  <td><input type='time' class='form-control form-control-sm' class='startDetail'></td>
+                  <td><input type='time' class='form-control form-control-sm' class='endDetail'></td>
+                  <td><input type='text' class='form-control form-control-sm' class='descDetail'></td>
+                </tr>`;
         $("table tbody").append(markup);
       });
 
@@ -207,6 +207,22 @@
             $(this).parents("tr").remove();
           }
         });
+        // if ($("table tbody tr").length == 0) {
+        //   $("#checkedAll").prop('checked', false);
+        // }
+      });
+
+      // check all record
+      $("#checkedAll").change(function () {
+        $(".checkDetail").prop('checked', this.checked);
+      });
+
+      $(".checkDetail").change(function () {
+        if ($(".checkDetail:checked").length == $(".checkDetail").length) {
+          $("#checkedAll").prop('checked', true);
+        } else {
+          $("#checkedAll").prop('checked', false);
+        }
       });
 
     });
