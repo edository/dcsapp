@@ -27,6 +27,18 @@ a.nav-link {
     margin-left: 10px !important;
 }
 
+/* Breadcrumb */
+.breadcrumb {
+    background-color: #fff !important;
+}
+
+/* Style to change breadcrumb separator  */
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">";
+    color: gray;
+}
+
+
 /* Card Header dan Detail */
 .card {
     margin-left: 1em;
