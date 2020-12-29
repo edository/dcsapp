@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1' name='viewport'>
+    <title>AR Payments</title>
+    <link
+        href='//d2sroe1fkk7ik0.cloudfront.net/assets/favicon-50750f43d50fb21bc9eef239713f0cba51d9558d4b583bba5d82303a04170743.ico'
+        rel='shortcut icon' type='image/ico'>
+    <link
+        href='//d2sroe1fkk7ik0.cloudfront.net/assets/apple-touch-icon-fdce08a1fce24b5e88edc7312019270346cbe3f1cdf7831adc65415f92f14d61.jpg'
+        rel='apple-touch-icon'>
+    <link
+        href='//d2sroe1fkk7ik0.cloudfront.net/assets/apple-touch-icon-72x72-7603c7b439506ea4f9f887f9b4ea7b3ee354bff8436130ca48a1d20f67b47127.jpg'
+        rel='apple-touch-icon' sizes='72x72'>
+    <link
+        href='//d2sroe1fkk7ik0.cloudfront.net/assets/apple-touch-icon-114x114-78ad93c440311e1ba7090cc9d14d8cf1df410880e017e18f7ce49fc32ce815f3.jpg'
+        rel='apple-touch-icon' sizes='114x114'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <meta content='' name='description'>
+    <meta content='' name='author'>
+    <link rel="stylesheet" media="all"
+        href="//d2sroe1fkk7ik0.cloudfront.net/assets/application_theme1-ad4a4bf2855f21c852e404f90f75a6715d4a7fa354f4b03221fe2d7f937c33e5.css" />
+    <link rel="stylesheet" media="screen"
+        href="//d2sroe1fkk7ik0.cloudfront.net/assets/payment_account_allocation-4443607d0c754792fc8ea32c016b09ae870a69c92fbd00668b4f0e558932d2f5.css" />
+    <link rel="stylesheet" media="print"
+        href="//d2sroe1fkk7ik0.cloudfront.net/assets/print-b951db66e7a49d1f0d744ee8859105503ee3d65dd26ba621b6549d9a86420cfd.css" />
+    <meta name="csrf-param" content="authenticity_token" />
+    <meta name="csrf-token"
+        content="+sEF+VInW+8CAHvfTR0K13S6ADEv93q8Ac43eRcyIGPA2l3jS2mg5XXi99GJdTPUuLfc29inBJw47XJQVrNXlQ==" />
+    <script>
+        //<![CDATA[
+        window.gon = {};
+        gon.sku_label = "SKU";
+        gon.enable_bulk_processing = false;
+        gon.allocated_invoice_paths = [];
+        gon.is_new_record = true;
+        gon.is_empty_record = true;
+        gon.has_existing_payment_account_allocations = false;
+        gon.use_ajax_lookup_wholesale_customer = false;
+        gon.customer_id_to_bank_account_id = {};
+        gon.number_of_precission = 0;
+        gon.auto_fill_ar_payment = false;
+        gon.payment_account_allocation_type = 1;
+        gon.payment_document_type = 1;
+        gon.sales_invoice_specified = false;
+        gon.invoice_receivable_specified = false;
+        gon.customer_bank_details_by_id = {};
+        //]]>
+    </script>
+    <script
+        src="//d2sroe1fkk7ik0.cloudfront.net/assets/application-4935d8dd5adec227e08f65154e4076771cd5c06376c25fedaeef52bd2d8b8f93.js">
+    </script>
+    <script>
+        accounting.settings = {
+            currency: {
+                symbol: "Rp ",
+                format: "%s%v",
+                decimal: ",",
+                thousand: ".",
+                precision: 2
+            },
+            number: {
+                precision: 0,
+                thousand: ".",
+                decimal: ","
+            }
+        };
+        turboly = window.turboly = window.turboly || {};
+        turboly.data = turboly.data || {};
+        turboly.data.currencyCode = "IDR";
+        turboly.data.pos_rounding = 100;
+        turboly.data.isMultiCurrency = false;
+        turboly.SESSION_TIMEOUT_SECONDS = 3600;
+        turboly.current_user_email = 'admin399@turboly.com';
+    </script>
+
+</head>
+
+<body>
+    <div id='wrap'>
+        <header class='navbar navbar-fixed-top'>
+            <nav class='navbar-inner'>
+                <div class='container-fluid'>
+                    <a class='btn btn-navbar' data-target='.nav-collapse' data-toggle='collapse'>
+                        Menu
+                        <i class='icon-caret-down'></i>
+                    </a>
+                    <div class='nav-collapse collapse'>
+                        <ul class='nav'>
+                            <li class=''>
+                                <a href="/dashboard">Dashboard</a>
+                            </li>
+                            <li class=''>
+                                <a href="/welcome/sales">Sales</a>
+                            </li>
+                            <li class=''>
+                                <a href="/customers">Customers</a>
+                            </li>
+                            <li class=''>
+                                <a href="/suppliers">Suppliers</a>
+                            </li>
+                            <li class=''>
+                                <a href="/products">Products</a>
+                            </li>
+                            <li class=''>
+                                <a href="/welcome/inventory">Inventory</a>
+                            </li>
+                            <li class='active'>
+                                <a href="/welcome/finance">Finance</a>
+                            </li>
+                            <li class=''>
+                                <a href="/journals">Accounting</a>
+                            </li>
+                            <li class=''>
+                                <a href="/reports">Reports</a>
+                            </li>
+                            <li class=''>
+                                <a href="/companies">Setup</a>
+                            </li>
+                            <li class=''>
+                                <a href="/help">E-learning</a>
+                            </li>
+                        </ul>
+                        <ul class='nav pull-right'>
+                            <li class='dropdown user-menu'>
+                                <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                                    <i class='icon-envelope icon-white'></i>
+                                </a>
+                                <ul class='dropdown-menu'>
+                                    <li>
+                                        <a href="/news"><i class='icon-globe icon-white'></i>
+                                            &nbsp;News
+                                        </a></li>
+                                </ul>
+                            </li>
+                            <li class='dropdown user-menu'>
+                                <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                                    <i class='icon-user icon-white'></i>
+                                    <div class='logged-in-user'>Account</div>
+                                    <div class='logged-in-user-company'>- Demo</div>
+                                    <b class='caret'></b>
+                                </a>
+                                <ul class='dropdown-menu'>
+                                    <li>
+                                        <a href="/users/8388"><i class='icon-user'></i>
+                                            &nbsp;My Details
+                                        </a></li>
+                                    <li>
+                                        <a href="/store_closes"><i class='icon-star'></i>
+                                            &nbsp;Events
+                                        </a></li>
+                                    <li>
+                                        <a href='https://turboly.atlassian.net/servicedesk/customer/portal/1'
+                                            target='_blank'>
+                                            <i class='icon-question'></i>
+                                            &nbsp;Contact Support
+                                        </a>
+                                    </li>
+                                    <li class='divider'></li>
+                                    <li>
+                                        <a rel="nofollow" data-method="delete" href="/users/sign_out"><i
+                                                class='icon-signout'></i>
+                                            &nbsp;Logout
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </nav>
+        </header>
+        <div id='main' role='main'>
+            <div class='container-fluid'>
+                <div class='content'>
+                    <div class='row-fluid'>
+                        <div class='span12'>
+                            <div class='flash-notice alert alert-error email-unverified-reminder' style='display:none;'>
+                                <a class='close' data-dismiss='alert'>×</a>
+                                Email belum terverifikasi, agar anda mendapatkan informasi terbaru baik melalui aplikasi
+                                atau email, lakukan verifikasi email dengan panduan pada <a target="_blank"
+                                    style="text-decoration:underline"
+                                    href="https://help.turboly.com/setup/setting_email_verification">tautan ini</a>.
+                            </div>
+
+                            <div class='subnav subnav-fixed'>
+                                <div class='container-fluid'>
+                                    <ul class='nav nav-pills'>
+                                        <li class='dropdown'>
+                                            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                                                Invoices
+                                                <b class='caret'></b>
+                                            </a>
+                                            <ul class='dropdown-menu'>
+                                                <li>
+                                                    <div style='margin-left: 6px;'>Inventory</div>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/purchase_invoices">Purchase Invoices</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/sales_invoices">Sales Invoices</a>
+                                                </li>
+                                                <li class='divider'></li>
+                                                <li>
+                                                    <div style='margin-left: 6px;'>General</div>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/invoice_payables">Invoice Payables</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/invoice_receivables">Invoice Receivables</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class='active dropdown'>
+                                            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                                                Payments
+                                                <b class='caret'></b>
+                                            </a>
+                                            <ul class='dropdown-menu'>
+                                                <li class=''>
+                                                    <a href="/credit_notes?purpose_type=2">AP Credit Notes</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/ap_payments">AP Payments</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/credit_notes?purpose_type=1">AR Credit Notes</a>
+                                                </li>
+                                                <li class='active'>
+                                                    <a href="/ar_payments">AR Payments</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class='dropdown'>
+                                            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                                                Reports
+                                                <b class='caret'></b>
+                                            </a>
+                                            <ul class='dropdown-menu'>
+                                                <li class=''>
+                                                    <a href="/finance/reports/account_payables">Account Payables</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/ap_aging">AP Aging</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/ap_payments">AP Payments</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/account_payables_credit">AP Credit</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/ap_overdue">AP Overdue</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/ap_overlimit">AP Overlimit</a>
+                                                </li>
+                                                <li class='divider'></li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/account_receivables">Account
+                                                        Receivables</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/ar_aging">AR Aging</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/ar_payments">AR Payments</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/account_receivables_credit">AR Credit</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/ar_overdue">AR Overdue</a>
+                                                </li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/ar_overlimit">AR Overlimit</a>
+                                                </li>
+                                                <li class='divider'></li>
+                                                <li class=''>
+                                                    <a href="/finance/reports/summary_ar_ap_payment">Summary AR AP
+                                                        Payment</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class='subnav-fixed-bottom-gap'></div>
+
+                            <h3>New AR Payment</h3>
+                            <div class='well workflow-panel'>
+                                <div class='workflow-panel-content'>
+                                    <b>Workflow</b>
+                                    <ol class='workflow-steps clearfix' style='margin-left:10px;'>
+                                        <li class=''>
+                                            <span>Draft</span>
+                                        </li>
+                                        <li class=''>
+                                            <span>Approved</span>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                            <form class="simple_form form-horizontal" id="ar-payment-form" novalidate="novalidate"
+                                action="/ar_payments" accept-charset="UTF-8" method="post"><input name="utf8"
+                                    type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token"
+                                    value="rI3wmtlD0WSsQwlmbr0p5/sIdLybmLwYRlbpDzSG2WCWlqiAwA0qbtuhhWiq1RDkNwWoVmzIwjh/dawmdQeulg==" />
+                                <div class='form-inputs'>
+                                    <div class='row-fluid'>
+                                        <div class='span6'>
+                                            <div class="control-group string optional ar_payment_ref_code"><label
+                                                    class="string optional control-label"
+                                                    for="ar_payment_ref_code">Document No.</label>
+                                                <div class="controls"><input class="string optional input-large"
+                                                        autocomplete="off" readonly="readonly" type="text"
+                                                        name="ar_payment[ref_code]" id="ar_payment_ref_code" /></div>
+                                            </div>
+                                            <div class="control-group date required ar_payment_payment_date"><label
+                                                    class="date required control-label"
+                                                    for="ar_payment_payment_date"><abbr title="required">*</abbr>
+                                                    Payment date</label>
+                                                <div class="controls">
+                                                    <div class="input-append"><input id="payment-date"
+                                                            value="2020-12-28" class="date required use-datepicker"
+                                                            maxlength="10" size="10" type="text"
+                                                            name="ar_payment[payment_date]" />
+                                                        <span class='add-on'>
+                                                            <i class='icon-calendar' id='payment-date-datepicker'></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group select required ar_payment_store_id"><label
+                                                    class="select required control-label" for="store-id"><abbr
+                                                        title="required">*</abbr> Business Entity</label>
+                                                <div class="controls"><select id="store-id"
+                                                        class="select required use-turbo-select" required="required"
+                                                        aria-required="true" placeholder="Select Business Entity"
+                                                        name="ar_payment[store_id]">
+                                                        <option value=""></option>
+                                                        <option selected="selected" value="0">PT. Demo 399</option>
+                                                        <option value="5772">Baywalk</option>
+                                                        <option value="5769">Central Park</option>
+                                                        <option value="5771">Lippo Puri</option>
+                                                        <option value="5770">Pondok Indah</option>
+                                                        <option value="5773">Senayan City</option>
+                                                        <option value="6582">tes</option>
+                                                    </select></div>
+                                            </div>
+                                            <div class="control-group select required ar_payment_customer_id"><label
+                                                    class="select required control-label" for="customer-id"><abbr
+                                                        title="required">*</abbr> Payment From</label>
+                                                <div class="controls"><select id="customer-id"
+                                                        class="select required use-turbo-select"
+                                                        placeholder="Select Customer" name="ar_payment[customer_id]">
+                                                        <option value=""></option>
+                                                    </select></div>
+                                            </div>
+                                            <div class='ar-payment-coa-section' style=''>
+                                                <div class="control-group grouped_select required ar_payment_coa_id">
+                                                    <label class="grouped_select required control-label"
+                                                        for="ar_payment_coa_id"><abbr title="required">*</abbr>
+                                                        Coa</label>
+                                                    <div class="controls"><select
+                                                            class="grouped_select required use-turbo-select"
+                                                            name="ar_payment[coa_id]" id="ar_payment_coa_id">
+                                                            <option value=""></option>
+                                                            <optgroup label="Asset">
+                                                                <option value="60421">110100 - KAS PENJUALAN</option>
+                                                                <option value="60422">110101 - KAS KECIL</option>
+                                                                <option value="60423">110102 - KAS BESAR</option>
+                                                                <option selected="selected" value="60425">110201 - BCA
+                                                                    BANK A/C IN</option>
+                                                                <option value="60426">110202 - BCA BANK A/C OUT</option>
+                                                                <option value="60427">110298 - PIUTANG CC BANK</option>
+                                                                <option value="60428">110299 - BG KLIRING</option>
+                                                                <option value="60430">110301 - DEPOSITO</option>
+                                                                <option value="60432">110401 - KAS KECIL - BANK A/C IN
+                                                                </option>
+                                                                <option value="60433">110402 - KAS KECIL - BANK A/C OUT
+                                                                </option>
+                                                                <option value="60434">110403 - KAS PENJUALAN - BANK A/C
+                                                                    IN</option>
+                                                                <option value="60435">110404 - BANK A/C IN - BANK A/C
+                                                                    OUT</option>
+                                                                <option value="60436">110405 - KAS - KAS</option>
+                                                                <option value="60438">110501 - PIUTANG DAGANG</option>
+                                                                <option value="60439">110502 - PIUTANG CUSTOMER TOKO
+                                                                </option>
+                                                                <option value="60440">110598 - PIUTANG ACCRUED</option>
+                                                                <option value="60441">110599 - PIUTANG DAGANG LAINNYA
+                                                                </option>
+                                                                <option value="60442">1106 - PIUTANG KARYAWAN</option>
+                                                                <option value="60443">1107 - PIUTANG PEMEGANG SAHAM
+                                                                </option>
+                                                                <option value="60445">110801 - PIUTANG PIHAK KE-3
+                                                                </option>
+                                                                <option value="60446">110802 - PRICE VARIANCE</option>
+                                                                <option value="60447">1109 - INVENTORY</option>
+                                                                <option value="60449">111001 - ACCESSORIES SPARE PARTS
+                                                                </option>
+                                                                <option value="60450">111002 - PERALATAN KANTOR</option>
+                                                                <option value="60452">111101 - UANG MUKA PAJAK PPH 22
+                                                                </option>
+                                                                <option value="60453">111102 - UANG MUKA PAJAK PPH 23
+                                                                </option>
+                                                                <option value="60454">111103 - UANG MUKA PAJAK PPH 25
+                                                                </option>
+                                                                <option value="60455">111104 - PPN MASUKAN</option>
+                                                                <option value="60456">111105 - VALUE ADDIT TAX IMPORT -
+                                                                    IN</option>
+                                                                <option value="60457">111106 - LUXURY TAX - IN</option>
+                                                                <option value="60458">111107 - PPN MASUKAN ACCRUED
+                                                                </option>
+                                                                <option value="60459">111108 - PPN KELUARAN ACCRUED
+                                                                </option>
+                                                                <option value="60460">111109 - UANG MUKA PPH 21</option>
+                                                                <option value="60462">111201 - BIAYA DIBAYAR DIMUKA
+                                                                </option>
+                                                                <option value="60463">111202 - SEWA DIBAYAR DIMUKA
+                                                                </option>
+                                                                <option value="60464">111203 - ASURANSI DIBAYAR DIMUKA
+                                                                </option>
+                                                                <option value="60466">111301 - ADV PAYMENT</option>
+                                                                <option value="60467">1115 - UANG MUKA PEMBELIAN
+                                                                </option>
+                                                                <option value="60469">111601 - ADV PAYMENT TO XXX
+                                                                </option>
+                                                                <option value="60472">120101 - BANGUNAN</option>
+                                                                <option value="60473">120102 - KENDARAAN</option>
+                                                                <option value="60474">120103 - PERALATAN KANTOR</option>
+                                                                <option value="60475">120104 - PERLENGKAPAN BENGKEL
+                                                                </option>
+                                                                <option value="60476">120105 - PERALATAN BENGKEL
+                                                                </option>
+                                                                <option value="60477">120106 - ACCOUNTING SOFTWARE
+                                                                </option>
+                                                                <option value="60478">120107 - LISENSI</option>
+                                                                <option value="60479">120108 - PRA OPERATIONAL</option>
+                                                                <option value="60480">120109 - TANAH</option>
+                                                                <option value="60482">120201 - AK. DEP. BANGUNAN
+                                                                </option>
+                                                                <option value="60483">120202 - AK. DEP. KENDARAAN
+                                                                </option>
+                                                                <option value="60484">120203 - AK. DEP. PERALATAN KANTOR
+                                                                </option>
+                                                                <option value="60485">120204 - AK DEP. PERLENGKAPAN
+                                                                    BENGKEL</option>
+                                                                <option value="60486">120205 - AK. DEP. PERALATAN
+                                                                    BENGKEL</option>
+                                                                <option value="60487">120206 - AK. AMRT. ACCOUNTING
+                                                                    SOFTWARE</option>
+                                                                <option value="60488">120207 - AK. AMRT. LISENSI
+                                                                </option>
+                                                                <option value="60489">120208 - AK. AMRT. PRA OPERATIONAL
+                                                                </option>
+                                                                <option value="60491">1301 - JAMINAN (DEPOSIT)</option>
+                                                                <option value="60492">1302 - STOCK ANTAR KANTOR</option>
+                                                            </optgroup>
+                                                            <optgroup label="Liability">
+                                                                <option value="60496">210101 - HUTANG DAGANG SUPPLIER
+                                                                </option>
+                                                                <option value="60497">210102 - HUTANG DAGANG KE UPLINE
+                                                                </option>
+                                                                <option value="60498">2102 - ACCRUED HUTANG DAGANG
+                                                                </option>
+                                                                <option value="60500">210301 - HUTANG PAJAK PPH 21
+                                                                </option>
+                                                                <option value="60501">210302 - HUTANG PAJAK PPH 23
+                                                                </option>
+                                                                <option value="60502">210303 - HUTANG PAJAK PPH 25/29
+                                                                    BADAN</option>
+                                                                <option value="60503">210304 - HUTANG PAJAK PPH FINAL
+                                                                    (PPH SEWAA)</option>
+                                                                <option value="60504">210305 - PPN KELUARAN</option>
+                                                                <option value="60505">210306 - LUXURY TAX-OUT</option>
+                                                                <option value="60506">2104 - UM PENJUALAN</option>
+                                                                <option value="60507">2105 - UNREDEEMED VOUCHERS
+                                                                </option>
+                                                                <option value="60510">220101 - HUTANG TELEPHONE &amp;
+                                                                    FAX</option>
+                                                                <option value="60511">220102 - HUTANG BIAYA LISTRIK DAN
+                                                                    AIR</option>
+                                                                <option value="60512">220103 - HUTANG BIAYA GAJI
+                                                                </option>
+                                                                <option value="60513">220104 - HUTANG BIAYA KOMISI
+                                                                    PENJUALAN / INSENTIF</option>
+                                                                <option value="60514">220105 - HUTANG BIAYA PROMOSI
+                                                                </option>
+                                                                <option value="60515">220106 - BONUS DEALER/AGENT
+                                                                </option>
+                                                                <option value="60516">220107 - BLIND BONUS</option>
+                                                                <option value="60517">220108 - INCENTIVE</option>
+                                                                <option value="60518">220109 - ENTERTAINMENT</option>
+                                                                <option value="60519">220110 - DELIVERY GOODS</option>
+                                                                <option value="60520">220111 - AFTER SALES SERVICE
+                                                                </option>
+                                                                <option value="60521">220112 - OFFICE / WAREHOUSE RENTAL
+                                                                </option>
+                                                                <option value="60522">220113 - VEHICLE RENTAL</option>
+                                                                <option value="60523">220114 - OFFICE/WAREHOUSE
+                                                                    INSURANCE</option>
+                                                                <option value="60524">220115 - VEHICLE INSURANCE
+                                                                </option>
+                                                                <option value="60525">2202 - PROVISION PAYMENT DISCOUNT
+                                                                </option>
+                                                                <option value="60526">2299 - HUTANG LAIN-LAIN</option>
+                                                                <option value="60527">229901 - CEK / GIRO DLM PERJALANAN
+                                                                </option>
+                                                                <option value="60528">229902 - REKENING ANTAR CABANG
+                                                                </option>
+                                                                <option value="60529">229903 - HUTANG PEMEGANG SAHAM
+                                                                </option>
+                                                                <option value="60530">229904 - TITIPAN PIHAK KE-3
+                                                                </option>
+                                                                <option value="60531">229999 - HUTANG LAIN LAIN</option>
+                                                            </optgroup>
+                                                            <optgroup label="Equity">
+                                                                <option value="60534">3101 - MODAL SAHAM DISETOR
+                                                                </option>
+                                                                <option value="60535">3102 - TAMBAHAN MODAL DISETOR
+                                                                </option>
+                                                                <option value="60537">3201 - LABA DITAHAN S.D TAHUN LALU
+                                                                </option>
+                                                                <option value="60538">3202 - LABA DITAHAN TAHUN BERJALAN
+                                                                </option>
+                                                                <option value="60539">3203 - LABA DITAHAN BULAN BERJALAN
+                                                                </option>
+                                                            </optgroup>
+                                                            <optgroup label="Revenue">
+                                                                <option value="60541">4101 - PENJUALAN</option>
+                                                                <option value="60542">4102 - DISKON PENJUALAN</option>
+                                                                <option value="60543">4103 - RETUR PENJUALAN</option>
+                                                                <option value="60603">7101 - PENDAPTAN BUNGA/JASA GIRO
+                                                                </option>
+                                                                <option value="60604">7102 - LABA PENJUALAN AKTIVA
+                                                                </option>
+                                                                <option value="60605">7103 - PENDAPATAN SEWA</option>
+                                                                <option value="60606">7104 - PENDAPATAN SELISIH KURS
+                                                                </option>
+                                                                <option value="60607">7199 - PENDAPATAN LAINNYA</option>
+                                                            </optgroup>
+                                                            <optgroup label="Expense">
+                                                                <option value="60545">5101 - HPP</option>
+                                                                <option value="60548">6101 - BIAYA KOMISI TARGET PENJ
+                                                                </option>
+                                                                <option value="60549">6102 - BIAYA CUCI MOTOR</option>
+                                                                <option value="60550">6103 - BIAYA GAJI STAFF BENGKEL
+                                                                </option>
+                                                                <option value="60551">6104 - BIAYA PROMOSI</option>
+                                                                <option value="60552">6105 - BIAYA MANAGEMENT FEE
+                                                                </option>
+                                                                <option value="60555">620101 - GAJI/BONUS/THR STAFF
+                                                                    KANTOR</option>
+                                                                <option value="60556">620102 - ALAT TULIS DAN BRG
+                                                                    CETAKAN</option>
+                                                                <option value="60557">620103 - PERANGKO DAN MATERAI
+                                                                </option>
+                                                                <option value="60558">620104 - FOTOCOPY</option>
+                                                                <option value="60559">620105 - BARANG KEPERLUAN KOMPUTER
+                                                                </option>
+                                                                <option value="60560">620106 - BIAYA RUMAH TANGGA KANTOR
+                                                                </option>
+                                                                <option value="60561">620107 - BIAYA JAMSOSTEK</option>
+                                                                <option value="60562">620108 - BIAYA TRAINING DAN
+                                                                    REKRUTMEN</option>
+                                                                <option value="60563">620109 - BIAYA ASURANSI</option>
+                                                                <option value="60564">620110 - BIAYA MEDICAL KARYAWAN
+                                                                </option>
+                                                                <option value="60565">620111 - BIAYA KESEJAHTERAAN
+                                                                    KARYAWAN</option>
+                                                                <option value="60567">620201 - TELPON/INTERNET/FAX
+                                                                </option>
+                                                                <option value="60568">620202 - AIR</option>
+                                                                <option value="60569">620203 - LISTRIK</option>
+                                                                <option value="60571">620301 - BIAYA BENSIN/TOL DSB
+                                                                </option>
+                                                                <option value="60572">620302 - BIAYA PERJALANAN DINAS
+                                                                </option>
+                                                                <option value="60574">620401 - B.PEMELIHARAAN MOBIL
+                                                                </option>
+                                                                <option value="60575">620402 - B.PEMELIHARAAN MOTOR
+                                                                </option>
+                                                                <option value="60576">620403 - B.PEMELIHARAAN ALAT
+                                                                    KANTOR</option>
+                                                                <option value="60577">620404 - B.PEMELIHARAAN GEDUNG
+                                                                </option>
+                                                                <option value="60579">620501 - BIAYA SEWA</option>
+                                                                <option value="60580">620502 - BIAYA
+                                                                    REPRESENTASI/REKOMENDASI</option>
+                                                                <option value="60581">620503 - BIAYA NOTARIS/KONSULTAN
+                                                                </option>
+                                                                <option value="60582">620504 - BIAYA KEAMANAN/KEBERSIHAN
+                                                                </option>
+                                                                <option value="60583">620505 - BIAYA ENTERTAINMENT
+                                                                </option>
+                                                                <option value="60584">620506 - BIAYA
+                                                                    SUMBANGAN/IURAN/RETR</option>
+                                                                <option value="60585">620507 - BIAYA PEMBULATAN</option>
+                                                                <option value="60586">620508 - BIAYA ADM BANK</option>
+                                                                <option value="60587">620509 - B.UMUM LAINNYA</option>
+                                                                <option value="60589">620601 - B.ASURANSI GEDUNG
+                                                                </option>
+                                                                <option value="60590">620602 - B.ASURANSI KENDARAAN
+                                                                </option>
+                                                                <option value="60591">620603 - B.ASURANSI LAINNYA
+                                                                </option>
+                                                                <option value="60593">620701 - B.PENYUSUTAN GEDUNG
+                                                                </option>
+                                                                <option value="60594">620702 - B.PENYUSUTAN KENDARAAN
+                                                                </option>
+                                                                <option value="60595">620703 - B.PENYUSUTAN PERALTAN KTR
+                                                                </option>
+                                                                <option value="60596">620704 - B.PENYUSUTAN PERLGKPN
+                                                                    BENGKEL</option>
+                                                                <option value="60597">620705 - B.PENYUSUTAN PERARATAN
+                                                                    BENGKEL</option>
+                                                                <option value="60599">620801 - B.AMORTISASI S/W</option>
+                                                                <option value="60600">620802 - B.AMORTISASI PRA OPS
+                                                                </option>
+                                                                <option value="60601">620803 - B.AMORTISASI
+                                                                    LISENSI/PATEN</option>
+                                                                <option value="60609">7201 - BIAYA PAJAK BANK</option>
+                                                                <option value="60610">7202 - BIAYA PROVISI BANK</option>
+                                                                <option value="60611">7203 - BIAYA BUNGA LEASING
+                                                                </option>
+                                                                <option value="60612">7204 - RUGI ATAS PENJ.AKTIVA
+                                                                </option>
+                                                                <option value="60613">7205 - SELISIH KURS</option>
+                                                                <option value="60614">7206 - SELISIH PIUTANG/PENGHAPUSAN
+                                                                </option>
+                                                                <option value="60615">7207 - BIAYA BUNGA BANK</option>
+                                                                <option value="60616">7208 - BIAYA LAINNYA</option>
+                                                            </optgroup>
+                                                        </select></div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group string optional ar_payment_payment_ref_code">
+                                                <label class="string optional control-label"
+                                                    for="ar_payment_payment_ref_code">Reference No.</label>
+                                                <div class="controls"><input class="string optional input-large"
+                                                        autocomplete="off" type="text"
+                                                        name="ar_payment[payment_ref_code]"
+                                                        id="ar_payment_payment_ref_code" /></div>
+                                            </div>
+                                            <div class="control-group text optional ar_payment_customer_bank_details">
+                                                <label class="text optional control-label"
+                                                    for="ar_payment_customer_bank_details">Customer Bank Details</label>
+                                                <div class="controls"><textarea autocomplete="off"
+                                                        class="text optional turbo-notes" disabled="disabled" rows="3"
+                                                        name="ar_payment[customer_bank_details]"
+                                                        id="ar_payment_customer_bank_details"></textarea></div>
+                                            </div>
+                                            <div class="control-group text optional ar_payment_notes"><label
+                                                    class="text optional control-label"
+                                                    for="ar_payment_notes">Notes</label>
+                                                <div class="controls"><textarea autocomplete="off"
+                                                        class="text optional turbo-notes" rows="3"
+                                                        name="ar_payment[notes]" id="ar_payment_notes"></textarea></div>
+                                            </div>
+                                            <div class='control-group decimal required'>
+                                                <label class='control-label decimal required' for='received-amount'>
+                                                    <abbr title='required'>*</abbr>
+                                                    <div class='label label-info'>Amount Received</div>
+                                                </label>
+                                                <div class='controls'>
+                                                    <input id="received-amount" type="text" autocomplete="off" value=""
+                                                        class="numeric decimal required" step="any"
+                                                        name="ar_payment[paid_amount]" />
+                                                    <a class="btn btn-inverse add-ar-payment-account-allocation"
+                                                        style="margin-left:5px" href="#"><i
+                                                            class='icon-plus icon-white'></i>
+                                                        &nbsp;Add Account Allocations
+                                                    </a>
+                                                    <div class='modal hide fade' data-backdrop='static'
+                                                        id='modal-add-account-allocation' style='margin-top: 10px;'>
+                                                        <div class='modal-header'>
+                                                            <h3>AR Payment Account Allocation</h3>
+                                                        </div>
+                                                        <div class='modal-body'>
+                                                            <div class='tableContainer'>
+                                                                <!-- /- Header -->
+                                                                <table class='table table-condensed table-hover'
+                                                                    id='table-payment-account-allocation'>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>No.</th>
+                                                                            <th>Notes</th>
+                                                                            <th>Account</th>
+                                                                            <th class='align-right'>Amount (Rp)</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /- Template for new payment account allocation -->
+                                                        <script id='payment-account-allocation-template'
+                                                            type='text/template'>
+                                                            <tr class='payment-account-allocation-row'>
+<td class='payment-account-allocation-index' style='width:30px;'>0</td>
+<td><span class="string optional ar_payment_ar_payment_account_allocations_notes"><input type="text" class="string optional input-notes" autocomplete="off" name="ar_payment[ar_payment_account_allocations_attributes][new_payment_account_allocation][notes]" id="ar_payment_ar_payment_account_allocations_attributes_new_payment_account_allocation_notes" /></span></td>
+<td><span class="grouped_select required ar_payment_ar_payment_account_allocations_coa_id"><select class="grouped_select required use-turbo-select payment-account-allocation-coa" style="width:220px;" name="ar_payment[ar_payment_account_allocations_attributes][new_payment_account_allocation][coa_id]" id="ar_payment_ar_payment_account_allocations_attributes_new_payment_account_allocation_coa_id"><option value=""></option>
+<optgroup label="Asset"><option value="60421">110100 - KAS PENJUALAN</option>
+<option value="60422">110101 - KAS KECIL</option>
+<option value="60423">110102 - KAS BESAR</option>
+<option value="60425">110201 - BCA BANK A/C IN</option>
+<option value="60426">110202 - BCA BANK A/C OUT</option>
+<option value="60427">110298 - PIUTANG CC BANK</option>
+<option value="60428">110299 - BG KLIRING</option>
+<option value="60430">110301 - DEPOSITO</option>
+<option value="60432">110401 - KAS KECIL - BANK A/C IN</option>
+<option value="60433">110402 - KAS KECIL - BANK A/C OUT</option>
+<option value="60434">110403 - KAS PENJUALAN - BANK A/C IN</option>
+<option value="60435">110404 - BANK A/C IN - BANK A/C OUT</option>
+<option value="60436">110405 - KAS - KAS</option>
+<option value="60438">110501 - PIUTANG DAGANG</option>
+<option value="60439">110502 - PIUTANG CUSTOMER TOKO</option>
+<option value="60440">110598 - PIUTANG ACCRUED</option>
+<option value="60441">110599 - PIUTANG DAGANG LAINNYA</option>
+<option value="60442">1106 - PIUTANG KARYAWAN</option>
+<option value="60443">1107 - PIUTANG PEMEGANG SAHAM</option>
+<option value="60445">110801 - PIUTANG PIHAK KE-3</option>
+<option value="60446">110802 - PRICE VARIANCE</option>
+<option value="60447">1109 - INVENTORY</option>
+<option value="60449">111001 - ACCESSORIES SPARE PARTS</option>
+<option value="60450">111002 - PERALATAN KANTOR</option>
+<option value="60452">111101 - UANG MUKA PAJAK PPH 22</option>
+<option value="60453">111102 - UANG MUKA PAJAK PPH 23</option>
+<option value="60454">111103 - UANG MUKA PAJAK PPH 25</option>
+<option value="60455">111104 - PPN MASUKAN</option>
+<option value="60456">111105 - VALUE ADDIT TAX IMPORT - IN</option>
+<option value="60457">111106 - LUXURY TAX - IN</option>
+<option value="60458">111107 - PPN MASUKAN ACCRUED</option>
+<option value="60459">111108 - PPN KELUARAN ACCRUED</option>
+<option value="60460">111109 - UANG MUKA PPH 21</option>
+<option value="60462">111201 - BIAYA DIBAYAR DIMUKA</option>
+<option value="60463">111202 - SEWA DIBAYAR DIMUKA</option>
+<option value="60464">111203 - ASURANSI DIBAYAR DIMUKA</option>
+<option value="60466">111301 - ADV PAYMENT</option>
+<option value="60467">1115 - UANG MUKA PEMBELIAN</option>
+<option value="60469">111601 - ADV PAYMENT TO XXX</option>
+<option value="60472">120101 - BANGUNAN</option>
+<option value="60473">120102 - KENDARAAN</option>
+<option value="60474">120103 - PERALATAN KANTOR</option>
+<option value="60475">120104 - PERLENGKAPAN BENGKEL</option>
+<option value="60476">120105 - PERALATAN BENGKEL</option>
+<option value="60477">120106 - ACCOUNTING SOFTWARE</option>
+<option value="60478">120107 - LISENSI</option>
+<option value="60479">120108 - PRA OPERATIONAL</option>
+<option value="60480">120109 - TANAH</option>
+<option value="60482">120201 - AK. DEP. BANGUNAN</option>
+<option value="60483">120202 - AK. DEP. KENDARAAN</option>
+<option value="60484">120203 - AK. DEP. PERALATAN KANTOR</option>
+<option value="60485">120204 - AK DEP. PERLENGKAPAN BENGKEL</option>
+<option value="60486">120205 - AK. DEP. PERALATAN BENGKEL</option>
+<option value="60487">120206 - AK. AMRT. ACCOUNTING SOFTWARE</option>
+<option value="60488">120207 - AK. AMRT. LISENSI</option>
+<option value="60489">120208 - AK. AMRT. PRA OPERATIONAL</option>
+<option value="60491">1301 - JAMINAN (DEPOSIT)</option>
+<option value="60492">1302 - STOCK ANTAR KANTOR</option></optgroup><optgroup label="Liability"><option value="60496">210101 - HUTANG DAGANG SUPPLIER</option>
+<option value="60497">210102 - HUTANG DAGANG KE UPLINE</option>
+<option value="60498">2102 - ACCRUED HUTANG DAGANG</option>
+<option value="60500">210301 - HUTANG PAJAK PPH 21</option>
+<option value="60501">210302 - HUTANG PAJAK PPH 23</option>
+<option value="60502">210303 - HUTANG PAJAK PPH 25/29 BADAN</option>
+<option value="60503">210304 - HUTANG PAJAK PPH FINAL (PPH SEWAA)</option>
+<option value="60504">210305 - PPN KELUARAN</option>
+<option value="60505">210306 - LUXURY TAX-OUT</option>
+<option value="60506">2104 - UM PENJUALAN</option>
+<option value="60507">2105 - UNREDEEMED VOUCHERS</option>
+<option value="60510">220101 - HUTANG TELEPHONE &amp; FAX</option>
+<option value="60511">220102 - HUTANG BIAYA LISTRIK DAN AIR</option>
+<option value="60512">220103 - HUTANG BIAYA GAJI</option>
+<option value="60513">220104 - HUTANG BIAYA KOMISI PENJUALAN / INSENTIF</option>
+<option value="60514">220105 - HUTANG BIAYA PROMOSI</option>
+<option value="60515">220106 - BONUS DEALER/AGENT</option>
+<option value="60516">220107 - BLIND BONUS</option>
+<option value="60517">220108 - INCENTIVE</option>
+<option value="60518">220109 - ENTERTAINMENT</option>
+<option value="60519">220110 - DELIVERY GOODS</option>
+<option value="60520">220111 - AFTER SALES SERVICE</option>
+<option value="60521">220112 - OFFICE / WAREHOUSE RENTAL</option>
+<option value="60522">220113 - VEHICLE RENTAL</option>
+<option value="60523">220114 - OFFICE/WAREHOUSE INSURANCE</option>
+<option value="60524">220115 - VEHICLE INSURANCE</option>
+<option value="60525">2202 - PROVISION PAYMENT DISCOUNT</option>
+<option value="60526">2299 - HUTANG LAIN-LAIN</option>
+<option value="60527">229901 - CEK / GIRO DLM PERJALANAN</option>
+<option value="60528">229902 - REKENING ANTAR CABANG</option>
+<option value="60529">229903 - HUTANG PEMEGANG SAHAM</option>
+<option value="60530">229904 - TITIPAN PIHAK KE-3</option>
+<option value="60531">229999 - HUTANG LAIN LAIN</option></optgroup><optgroup label="Equity"><option value="60534">3101 - MODAL SAHAM DISETOR</option>
+<option value="60535">3102 - TAMBAHAN MODAL DISETOR</option>
+<option value="60537">3201 - LABA DITAHAN S.D TAHUN LALU</option>
+<option value="60538">3202 - LABA DITAHAN TAHUN BERJALAN</option>
+<option value="60539">3203 - LABA DITAHAN BULAN BERJALAN</option></optgroup><optgroup label="Revenue"><option value="60541">4101 - PENJUALAN</option>
+<option value="60542">4102 - DISKON PENJUALAN</option>
+<option value="60543">4103 - RETUR PENJUALAN</option>
+<option value="60603">7101 - PENDAPTAN BUNGA/JASA GIRO</option>
+<option value="60604">7102 - LABA PENJUALAN AKTIVA</option>
+<option value="60605">7103 - PENDAPATAN SEWA</option>
+<option value="60606">7104 - PENDAPATAN SELISIH KURS</option>
+<option value="60607">7199 - PENDAPATAN LAINNYA</option></optgroup><optgroup label="Expense"><option value="60545">5101 - HPP</option>
+<option value="60548">6101 - BIAYA KOMISI TARGET PENJ</option>
+<option value="60549">6102 - BIAYA CUCI MOTOR</option>
+<option value="60550">6103 - BIAYA GAJI STAFF BENGKEL</option>
+<option value="60551">6104 - BIAYA PROMOSI</option>
+<option value="60552">6105 - BIAYA MANAGEMENT FEE</option>
+<option value="60555">620101 - GAJI/BONUS/THR STAFF KANTOR</option>
+<option value="60556">620102 - ALAT TULIS DAN BRG CETAKAN</option>
+<option value="60557">620103 - PERANGKO DAN MATERAI</option>
+<option value="60558">620104 - FOTOCOPY</option>
+<option value="60559">620105 - BARANG KEPERLUAN KOMPUTER</option>
+<option value="60560">620106 - BIAYA RUMAH TANGGA KANTOR</option>
+<option value="60561">620107 - BIAYA JAMSOSTEK</option>
+<option value="60562">620108 - BIAYA TRAINING DAN REKRUTMEN</option>
+<option value="60563">620109 - BIAYA ASURANSI</option>
+<option value="60564">620110 - BIAYA MEDICAL KARYAWAN</option>
+<option value="60565">620111 - BIAYA KESEJAHTERAAN KARYAWAN</option>
+<option value="60567">620201 - TELPON/INTERNET/FAX</option>
+<option value="60568">620202 - AIR</option>
+<option value="60569">620203 - LISTRIK</option>
+<option value="60571">620301 - BIAYA BENSIN/TOL DSB</option>
+<option value="60572">620302 - BIAYA PERJALANAN DINAS</option>
+<option value="60574">620401 - B.PEMELIHARAAN MOBIL</option>
+<option value="60575">620402 - B.PEMELIHARAAN MOTOR</option>
+<option value="60576">620403 - B.PEMELIHARAAN ALAT KANTOR</option>
+<option value="60577">620404 - B.PEMELIHARAAN GEDUNG</option>
+<option value="60579">620501 - BIAYA SEWA</option>
+<option value="60580">620502 - BIAYA REPRESENTASI/REKOMENDASI</option>
+<option value="60581">620503 - BIAYA NOTARIS/KONSULTAN</option>
+<option value="60582">620504 - BIAYA KEAMANAN/KEBERSIHAN</option>
+<option value="60583">620505 - BIAYA ENTERTAINMENT</option>
+<option value="60584">620506 - BIAYA SUMBANGAN/IURAN/RETR</option>
+<option value="60585">620507 - BIAYA PEMBULATAN</option>
+<option value="60586">620508 - BIAYA ADM BANK</option>
+<option value="60587">620509 - B.UMUM LAINNYA</option>
+<option value="60589">620601 - B.ASURANSI GEDUNG</option>
+<option value="60590">620602 - B.ASURANSI KENDARAAN</option>
+<option value="60591">620603 - B.ASURANSI LAINNYA</option>
+<option value="60593">620701 - B.PENYUSUTAN GEDUNG</option>
+<option value="60594">620702 - B.PENYUSUTAN KENDARAAN</option>
+<option value="60595">620703 - B.PENYUSUTAN PERALTAN KTR</option>
+<option value="60596">620704 - B.PENYUSUTAN PERLGKPN BENGKEL</option>
+<option value="60597">620705 - B.PENYUSUTAN PERARATAN BENGKEL</option>
+<option value="60599">620801 - B.AMORTISASI S/W</option>
+<option value="60600">620802 - B.AMORTISASI PRA OPS</option>
+<option value="60601">620803 - B.AMORTISASI LISENSI/PATEN</option>
+<option value="60609">7201 - BIAYA PAJAK BANK</option>
+<option value="60610">7202 - BIAYA PROVISI BANK</option>
+<option value="60611">7203 - BIAYA BUNGA LEASING</option>
+<option value="60612">7204 - RUGI ATAS PENJ.AKTIVA</option>
+<option value="60613">7205 - SELISIH KURS</option>
+<option value="60614">7206 - SELISIH PIUTANG/PENGHAPUSAN</option>
+<option value="60615">7207 - BIAYA BUNGA BANK</option>
+<option value="60616">7208 - BIAYA LAINNYA</option></optgroup></select></span></td>
+<td class='align-right'><span class="decimal required ar_payment_ar_payment_account_allocations_amount"><input type="text" class="numeric decimal required payment-account-allocation-amount use-maskmoney align-right" style="width:100px;" value="0" autocomplete="off" step="any" name="ar_payment[ar_payment_account_allocations_attributes][new_payment_account_allocation][amount]" id="ar_payment_ar_payment_account_allocations_attributes_new_payment_account_allocation_amount" /></span></td>
+<input value="1770" type="hidden" name="ar_payment[ar_payment_account_allocations_attributes][new_payment_account_allocation][company_id]" id="ar_payment_ar_payment_account_allocations_attributes_new_payment_account_allocation_company_id" />
+<input class="destroy-field" type="hidden" value="false" name="ar_payment[ar_payment_account_allocations_attributes][new_payment_account_allocation][_destroy]" id="ar_payment_ar_payment_account_allocations_attributes_new_payment_account_allocation__destroy" />
+<td class='remove-line-item'>
+<i class='icon-large icon-remove-sign'></i>
+</td>
+</tr>
+
+</script>
+                                                        <div class='modal-footer'>
+                                                            <div class='row-fluid'>
+                                                                <div class='span5'>
+                                                                    <div class='pull-left'>
+                                                                        <dl class='item-details dl-horizontal'>
+                                                                            <dt>Amount Received :</dt>
+                                                                            <dd class='received-amount'
+                                                                                style='font-size: 16px;'></dd>
+                                                                        </dl>
+                                                                    </div>
+                                                                </div>
+                                                                <div class='span7'>
+                                                                    <a class='btn btn-danger' href='#'
+                                                                        id='reset-payment-account-allocation-dialog'
+                                                                        style='margin-right: 50px;'>Reset</a>
+                                                                    <a class="btn btn-inverse add-payment-account-allocation"
+                                                                        href="#"><i class='icon-plus icon-white'></i>
+                                                                        &nbsp;Add Account
+                                                                    </a><a class='btn btn-primary' href='#'
+                                                                        id='save-payment-account-allocation-dialog'>Save
+                                                                        & Close</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='span6'>
+                                            <div id='form-cheque-bg'>
+                                                <div class="control-group boolean optional ar_payment_use_cheque_bg">
+                                                    <label class="boolean optional control-label"
+                                                        for="ar_payment_use_cheque_bg">Use Cheque/BG</label>
+                                                    <div class="controls"><input value="0" type="hidden"
+                                                            name="ar_payment[use_cheque_bg]" /><label
+                                                            class="checkbox"><input class="boolean optional"
+                                                                type="checkbox" value="1"
+                                                                name="ar_payment[use_cheque_bg]"
+                                                                id="ar_payment_use_cheque_bg" /></label></div>
+                                                </div>
+                                                <div
+                                                    class="control-group date optional ar_payment_cheque_bg_received_at">
+                                                    <label class="date optional control-label"
+                                                        for="ar_payment_cheque_bg_received_at">Received Date</label>
+                                                    <div class="controls">
+                                                        <div class="input-append"><input value=""
+                                                                class="date optional disabled use-datepicker"
+                                                                disabled="disabled" maxlength="10" size="10" type="text"
+                                                                name="ar_payment[cheque_bg_received_at]"
+                                                                id="ar_payment_cheque_bg_received_at" />
+                                                            <span class='add-on'>
+                                                                <i class='icon-calendar'
+                                                                    id='cheque-bg-received-date-datepicker'></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="control-group date optional ar_payment_cheque_bg_disbursement_at">
+                                                    <label class="date optional control-label"
+                                                        for="ar_payment_cheque_bg_disbursement_at">Disbursement
+                                                        Date</label>
+                                                    <div class="controls">
+                                                        <div class="input-append"><input value=""
+                                                                class="date optional disabled use-datepicker"
+                                                                disabled="disabled" maxlength="10" size="10" type="text"
+                                                                name="ar_payment[cheque_bg_disbursement_at]"
+                                                                id="ar_payment_cheque_bg_disbursement_at" />
+                                                            <span class='add-on'>
+                                                                <i class='icon-calendar'
+                                                                    id='cheque-bg-disbursement-date-datepicker'></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="control-group string optional ar_payment_cheque_bg_number">
+                                                    <label class="string optional control-label"
+                                                        for="ar_payment_cheque_bg_number">Cheque/BG Number</label>
+                                                    <div class="controls"><input disabled="disabled"
+                                                            class="string optional" type="text"
+                                                            name="ar_payment[cheque_bg_number]"
+                                                            id="ar_payment_cheque_bg_number" /></div>
+                                                </div>
+                                            </div>
+                                            <div class='form-document-tracking'>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /- Journal lines section -->
+                                    <div class='line-item-section'>
+                                        <div class='row-fluid'>
+                                            <div class='span5'>
+                                                <h3>Invoice Payments (From Customer)</h3>
+                                            </div>
+                                        </div>
+                                        <!-- /- Header -->
+                                        <table class='table'>
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Account</th>
+                                                    <th>Document</th>
+                                                    <th>Invoice</th>
+                                                    <th>Date</th>
+                                                    <th>Due Date</th>
+                                                    <th class='align-right'>Amount (Rp)</th>
+                                                    <th class='align-right'>
+                                                        <div class='label label-important'>Unpaid (Rp)</div>
+                                                    </th>
+                                                    <th class='align-right'>
+                                                        <div class='label label-success'>Payment (Rp)</div>
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- /- Footer -->
+                                            </tbody>
+                                            <tfoot class='line-item-section-footer'>
+                                                <tr>
+                                                    <td colspan='7'>
+                                                        <a class="btn btn-inverse add-line-item" style="margin: 0"
+                                                            href="#"><i class='icon-plus icon-white'></i>
+                                                            &nbsp;Get 100 Documents
+                                                        </a><a class="btn btn-inverse add-ar-document"
+                                                            style="margin-left:5px" href="#"><i
+                                                                class='icon-search icon-white'></i>
+                                                            &nbsp;Search Documents
+                                                        </a>
+                                                        <style>
+                                                            body #modal-add-document {
+                                                                /* new custom width */
+                                                                width: 60%;
+                                                                /* must be half of the width, minus scrollbar on the left (30px) */
+                                                                margin-left: -30%;
+                                                            }
+
+                                                            div.tableContainer {
+                                                                width: 100%;
+                                                                /* table width will be 99% of this*/
+                                                                height: 350px;
+                                                                /* must be greater than tbody*/
+                                                                overflow: auto;
+                                                                margin: 0 auto;
+                                                            }
+
+                                                            table {
+                                                                width: 100%;
+                                                                /*100% of container produces horiz. scroll in Mozilla*/
+                                                                border: none;
+                                                                border-spacing: 0px;
+                                                                background-color: transparent;
+                                                            }
+
+                                                            table>tbody {
+                                                                overflow: auto;
+                                                                height: 330px;
+                                                                overflow-x: hidden;
+                                                            }
+
+                                                            table>tbody tr {
+                                                                height: auto;
+                                                            }
+
+                                                            table>thead tr {
+                                                                position: relative;
+                                                                top: 0px;
+                                                                /*expression(offsetParent.scrollTop); IE5+ only*/
+                                                            }
+                                                        </style>
+                                                        <div class='modal hide fade' data-backdrop='static'
+                                                            id='modal-add-document' style='margin-top: 10px;'>
+                                                            <div class='modal-header'>
+                                                                <h3>AR Payment Documents</h3>
+                                                            </div>
+                                                            <div class='modal-body'>
+                                                                <div class='well turbo-search-panel'>
+                                                                    <span>
+                                                                        <input id='input-document'
+                                                                            placeholder='Search Document'
+                                                                            style='width:250px;margin:5px 0 5px 5px;'
+                                                                            type='text'>
+                                                                    </span>
+                                                                    <span class='turbo-search-panel-actions'>
+                                                                        <button name="button" type="button"
+                                                                            id="search-document" class="btn"
+                                                                            style="margin-left:5px;"><i
+                                                                                class='icon-search icon-white'></i>
+                                                                            &nbsp;Search
+                                                                        </button></span>
+                                                                </div>
+                                                                <div class='tableContainer'>
+                                                                    <!-- /- Header -->
+                                                                    <table class='table table-condensed table-hover'>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>No.</th>
+                                                                                <th>Document No</th>
+                                                                                <th>Type</th>
+                                                                                <th>Invoice Date</th>
+                                                                                <th>Due Date</th>
+                                                                                <th class='align-right'>Amount (Rp)</th>
+                                                                                <th class='align-right'>
+                                                                                    <div class='label label-important'>
+                                                                                        Unpaid (Rp)</div>
+                                                                                </th>
+                                                                                <th class='align-right'><input
+                                                                                        type="checkbox"
+                                                                                        name="select_all_documents"
+                                                                                        id="select_all_documents"
+                                                                                        value="false"
+                                                                                        class="select-all" /></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id='table-document-list'></tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div class='modal-footer'>
+                                                                <div class='row-fluid'>
+                                                                    <div class='span12'>
+                                                                        <button name="button" type="button"
+                                                                            class="btn btn-inverse add-document"><i
+                                                                                class='icon-plus icon-white'></i>
+                                                                            &nbsp;Add
+                                                                        </button><a class='btn close-modal'
+                                                                            data-dismiss='modal'>Close</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                    <td class='align-right' style='vertical-align:middle'>
+                                                        <div class='label label-important'>Invoice Unpaid</div>
+                                                    </td>
+                                                    <td class='align-right' id='unpaid-total-label'
+                                                        style='vertical-align:middle'>0</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='7'></td>
+                                                    <td class='align-right'>
+                                                        <div class='label label-success'>Invoice Payments</div>
+                                                    </td>
+                                                    <td class='align-right' id='amount-total-label'>0</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='7'></td>
+                                                    <td class='align-right'>
+                                                        <div class='label label-info'>Amount Received</div>
+                                                    </td>
+                                                    <td class='align-right' id='paid-total-label'>0</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan='7'></td>
+                                                    <td class='align-right' style='color: red;'>Variance</td>
+                                                    <td class='align-right' id='variance-amount-label'
+                                                        style='color: red;'>0</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /- Template for new stock order line -->
+                                <script id='line-item-template' type='text/template'>
+                                    <tr class='line-item-row'>
+<td class='line-item-index'>0</td>
+<td class='line-item-coa'></td>
+<td>
+<a class='line-item-document' href='#' tabIndex='-1' target='_blank'></a>
+</td>
+<td class='line-item-invoice'>
+<a class='invoice-link' href='#' tabIndex='-1' target='_blank'></a>
+</td>
+<td class='line-item-date'></td>
+<td class='line-item-due-date'></td>
+<td class='line-item-amount align-right'></td>
+<td class='line-item-unpaid-amount align-right'></td>
+<input class="invoice-id" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][sales_invoice_id]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_sales_invoice_id" />
+<input class="invoice-receivable-id" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][invoice_receivable_id]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_invoice_receivable_id" />
+<input class="sales-order-return-id" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][sales_order_return_id]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_sales_order_return_id" />
+<input class="stock-order-id" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][stock_order_id]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_stock_order_id" />
+<input class="stock-return-id" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][stock_return_id]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_stock_return_id" />
+<input class="consignment-issue-invoice-id" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][consignment_issue_invoice_id]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_consignment_issue_invoice_id" />
+<input class="customer-id" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][customer_id]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_customer_id" />
+<input class="credit-note-id" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][credit_note_id]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_credit_note_id" />
+<td class='align-right'>
+<span class="string optional ar_payment_ar_payment_allocations_amount_readonly"><input type="text" class="string optional input-amount align-right" value="0" autocomplete="off" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][amount_readonly]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_amount_readonly" /></span>
+<input class="payment-allocation-amount" value="0" type="hidden" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][amount]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation_amount" />
+</td>
+<input class="destroy-field" type="hidden" value="false" name="ar_payment[ar_payment_allocations_attributes][new_ar_payment_allocation][_destroy]" id="ar_payment_ar_payment_allocations_attributes_new_ar_payment_allocation__destroy" />
+<td>
+<div class='remove-line-item'>
+<i class='icon-large icon-remove-sign'></i>
+</div>
+</td>
+</tr>
+
+</script>
+                                <div class='form-actions' id='btn-submit-form'>
+                                    <input type="submit" name="commit" value="Save"
+                                        class="btn btn btn-primary turbo-btn-save" data-disable-with="Saving..." />
+                                    <a class="btn turbo-btn-cancel" href="/ar_payments">Cancel</a>
+                                </div>
+                            </form>
+
+
+                        </div>
+                    </div>
+                    <footer style='margin-bottom: 50px'></footer>
+                </div>
+            </div>
+        </div>
+        <div class='no-print' id='footer'>
+            <div class='container-fluid'>
+                <div style='display: inline-block; margin: 10px;'>
+                    <a href='https://turboly.com/terms.html' style='color: #AAA;' target='_blank'>Terms &amp;
+                        Conditions</a>
+                </div>
+                <div class='muted credit'>
+                    <img alt='Turboly'
+                        src='//d2sroe1fkk7ik0.cloudfront.net/assets/logo-721dbfedded202176e8a3bfb057c83dfa7c198ce7a287aab27963827116ac2f6.png'>
+                </div>
+            </div>
+        </div>
+        <script
+            src="//d2sroe1fkk7ik0.cloudfront.net/assets/ar_payments/form-4f8dde099d53e59913cc6734f80f1659a86f122e742a7802d922716245e05416.js">
+        </script>
+
+    </div>
+</body>
+
+</html>
+<!-- /------------------ BILLING WARNING -------------------------- -->
+<div class='modal' id='warning' style='display: none;'>
+    <div class='modal-header'>
+        <a class='close' data-dismiss='modal'>×</a>
+        <h3 style='color:red'>Reminder</h3>
+    </div>
+    <div class='modal-body'>
+        <div class='form form-horizontal'>
+            <p>Dear pelanggan Turboly,</p>
+            <p>Mohon melakukan pembayaran segera, untuk dapat tetap menggunakan layanan Turboly.</p>
+        </div>
+    </div>
+    <div class='modal-footer'>
+        <button class='btn btn-primary' data-dismiss='modal' type='button'>Tutup</button>
+    </div>
+</div>
+<style>
+    iframe[name='JSD widget'] {
+        left: 0;
+        bottom: 0;
+    }
+</style>
