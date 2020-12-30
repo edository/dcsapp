@@ -22,7 +22,7 @@
   <!-- Custom JS -->
   <script src="assets/js/app.js"></script>
 
-  <title>DCS App - Loading</title>
+  <title>DCS App - Shipping</title>
 </head>
 
 <body>
@@ -64,21 +64,24 @@
   </nav>
   <!-- Navbar end -->
 
-  <!-- Breadcrumb start -->
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="#">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Loading</li>
-    </ol>
-  </nav>
-  <!-- Breadcrumb end -->
+  <div class="top-bar row">
+    <div class="col">
+      <h6 class="ml-3 mt-3 h-title-color font-weight-bold">Shipping</h6>
+    </div>
+    <div class="col filter-status text-right">
+      <select class="form-control-sm border-gray">
+        <option>Open</option>
+        <option>Shipping</option>
+      </select>
+    </div>
+  </div>
 
   <!-- Section Table Start -->
   <section class="mt-3">
     <table class="sp table table-sm table-hover">
       <thead style="background-color:#f5f5f5;">
         <tr>
-          <th scope="col">Loading No.</th>
+          <th scope="col">SPAL No.</th>
           <th scope="col">Fleet</th>
           <th scope="col">Customer</th>
           <th scope="col">Current Point</th>
@@ -90,9 +93,37 @@
       <tbody>
         <tr>
           <td>
-            <a href="loading-detail.html" class="text-decoration-none">001/XII/2020/LOADING/DCS-XX123</a>
+            <a href="loading-detail.html" class="text-decoration-none">001/XII/2020/SPAL/DCS-XX123</a>
           </td>
           <td>Delta Cakra 1</td>
+          <td>Santo</td>
+          <td>Tanjung Priok</td>
+          <td>Tanjung Priok</td>
+          <td>Merak</td>
+          <td>
+            <span class="badge badge-danger p-1 text-uppercase"> <a href="#"
+                class="text-decoration-none text-white">Open</a></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="loading-detail.html" class="text-decoration-none">001/XII/2020/SPAL/DCS-XX124</a>
+          </td>
+          <td>Delta Cakra 2</td>
+          <td>Santo</td>
+          <td>Tanjung Priok</td>
+          <td>Tanjung Priok</td>
+          <td>Merak</td>
+          <td>
+            <span class="badge badge-danger p-1 text-uppercase"> <a href="#"
+                class="text-decoration-none text-white">Open</a></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="loading-detail.html" class="text-decoration-none">001/XII/2020/SPAL/DCS-XX125</a>
+          </td>
+          <td>Delta Cakra 3</td>
           <td>Santo</td>
           <td>Tanjung Priok</td>
           <td>Tanjung Priok</td>

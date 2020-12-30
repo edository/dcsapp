@@ -27,9 +27,14 @@ a.nav-link {
     margin-left: 10px !important;
 }
 
+.filter-status {
+    padding-right: 35px;
+    padding-top: 10px;
+}
+
 /* Breadcrumb */
 .breadcrumb {
-    background-color: #fff !important;
+    /* background-color: #fff !important; */
 }
 
 /* Style to change breadcrumb separator  */
