@@ -2,6 +2,10 @@
     font-family: 'Lato', sans-serif;
 }
 
+body a:hover {
+    text-decoration: none;
+}
+
 .navbar {
     /* background-color: #005B9A !important; */
     background: rgb(0, 91, 154);
@@ -62,7 +66,6 @@ section {
 section .sp {
     font-size: 12px;
 }
-
 
 
 
